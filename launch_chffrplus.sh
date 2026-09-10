@@ -70,6 +70,14 @@ function launch {
   ln -sfn $(pwd) /data/pythonpath
   export PYTHONPATH="$PWD"
 
+  # GCC support: forced car fingerprint (platform string, e.g. MAZDA_CX9_2021).
+  # Set via: echo -n "MAZDA_CX9_2021" > /data/params/d/GccForcedCar
+  if [ -s /data/params/d/GccForcedCar ]; then
+    export FINGERPRINT="$(cat /data/params/d/GccForcedCar)"
+    export SKIP_FW_QUERY=1
+    echo "GCC forced fingerprint: $FINGERPRINT"
+  fi
+
   # submodule package symlinks for PYTHONPATH imports on device.
   # on PC these come from editable installs via pyproject.toml / uv.
   ln -sfn msgq_repo/msgq msgq
